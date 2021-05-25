@@ -1,7 +1,7 @@
 module.exports = {
     name: "reload",
     execute(message, args) {
-        if (message.author.id != "846370052160618559") return;
+        if (message.author.id != "365206297701777408") return;
         if (!args[0]) return message.channel.send(`You didn't pass any command to reload.`);
         const commandName = args[0].toLowerCase();
         const command = message.client.commands.get(commandName);
