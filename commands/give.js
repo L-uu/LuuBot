@@ -15,7 +15,7 @@ module.exports = {
             return message.react("❌");
         };
         const balCheck = db.get(`guild_${message.guild.id}_bal_${message.author.id}`);
-        if(args[1] > balCheck || isNaN(args[1])) {
+        if(args[1] > balCheck || args[1] < 0 || isNaN(args[1])) {
             message.channel.send("Invalid amount.")
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
