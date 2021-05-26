@@ -18,6 +18,11 @@ module.exports = {
 - speed (changes the playback speed for the current queue)\n\
 - pitch (changes the pitch of the audio for the current queue)\n\
 - clearfilters (removes all custom playback settings)\n\n\
+**Economy**\n\
+- makebank (creates a bank account to store money)\n\
+- claim (adds $100 to a user's balance)\n\
+- balance (checks you or another user's balance)\n\
+- coinflip (bet money on a heads/tails coinflip)\n\n\
 **Misc:**\n\
 - prefix (changes the command prefix)\n\
 - clear (clears a specified amount of chat messages)\n\
