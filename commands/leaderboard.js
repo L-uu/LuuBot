@@ -1,5 +1,6 @@
 module.exports = {
     name: "leaderboard",
+    aliases: ["lb"],
     execute(message) {
         const { isRankOn } = require("../index");
         if (isRankOn == false) {
