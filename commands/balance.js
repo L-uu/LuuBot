@@ -11,6 +11,11 @@ module.exports = {
         };
         const user = message.mentions.users.first() || message.author;
         var balCheck = db.get(`guild_${message.guild.id}_bal_${user.id}`);
+        if(!balCheck) {
+            message.channel.send("This user has no bank account.")
+                .then(msg => msg.delete({ timeout: 5000 }));
+            return message.react("❌");
+        };
         message.channel.send(`$${balCheck}`);
         return message.react("✅");
     }
