@@ -9,7 +9,8 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
-        var balCheck = db.get(`guild_${message.guild.id}_bal_${message.author.id}`);
+        const user = message.mentions.users.first() || message.author;
+        var balCheck = db.get(`guild_${message.guild.id}_bal_${user.id}`);
         message.channel.send(`$${balCheck}`);
         return message.react("✅");
     }
