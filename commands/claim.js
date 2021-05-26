@@ -11,10 +11,11 @@ module.exports = {
         const now = new Date();
         const lastClaimed = db.get(`guild_${message.guild.id}_lastclaimed_${message.author.id}`);
         if(!lastClaimed) {
-            db.add(`guild_${message.guild.id}_lastclaimed_${message.author.id}`, now.getMinutes());
+            db.add(`guild_${message.guild.id}_lastclaimed_${message.author.id}`, now.getTime());
         };
-        if(now.getMinutes() > lastClaimed + 10 || !lastClaimed) {
+        if(now.getTime() > lastClaimed + 600000 || !lastClaimed) {
             db.add(`guild_${message.guild.id}_bal_${message.author.id}`, 100);
+            db.set(`guild_${message.guild.id}_lastclaimed_${message.author.id}`, now.getTime());
             message.channel.send("Successfully claimed $100, come back in 10 minutes.")
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("✅");
