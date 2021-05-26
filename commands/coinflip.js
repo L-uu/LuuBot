@@ -1,6 +1,6 @@
 module.exports = {
     name: "coinflip",
-    aliases: "cf",
+    aliases: ["cf"],
     execute(message, args) {
         const db = require("quick.db");
         var bankCheck = db.get(`guild_${message.guild.id}_bank_${message.author.id}`) || 0;
