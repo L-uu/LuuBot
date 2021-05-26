@@ -9,6 +9,11 @@ module.exports = {
             return message.react("❌");
         };
         const user = message.mentions.users.first();
+        if(!user) {
+            message.channel.send("Invalid user.")
+                .then(msg => msg.delete({ timeout: 5000 }));
+            return message.react("❌");
+        }
         if(user.id == message.author.id) {
             message.channel.send("You cannot give to yourself.")
                 .then(msg => msg.delete({ timeout: 5000 }));

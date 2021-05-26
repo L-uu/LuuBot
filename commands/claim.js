@@ -9,8 +9,11 @@ module.exports = {
             return message.react("❌");
         };
         const now = new Date();
-        const lastClaimed = db.add(`guild_${message.guild.id}_lastclaimed_${message.author.id}`, now.getMinutes());
-        if(now.getMinutes() > lastClaimed + 10) {
+        const lastClaimed = db.get(`guild_${message.guild.id}_lastclaimed_${message.author.id}`);
+        if(!lastClaimed) {
+            db.add(`guild_${message.guild.id}_lastclaimed_${message.author.id}`, now.getMinutes());
+        };
+        if(now.getMinutes() > lastClaimed + 10 || !lastClaimed) {
             db.add(`guild_${message.guild.id}_bal_${message.author.id}`, 100);
             message.channel.send("Successfully claimed $100, come back in 10 minutes.")
                 .then(msg => msg.delete({ timeout: 5000 }));
