@@ -24,7 +24,7 @@ module.exports = {
                 message.channel.send("Looping disabled.")
                     .then(msg => msg.delete({ timeout: 5000 }));
                 return message.react("✅");
-            }
+            };
         } catch (error) {
             message.channel.send(`${error}`);
             return message.react("❌");

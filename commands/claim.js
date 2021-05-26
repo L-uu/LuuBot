@@ -22,6 +22,6 @@ module.exports = {
             message.channel.send("This command can only be used once every 10 minutes.")
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
-        }
+        };
     }
 };

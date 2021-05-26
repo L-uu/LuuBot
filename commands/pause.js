@@ -17,7 +17,7 @@ module.exports = {
             return message.channel.send("Music is already paused.")
                 .then(message.react("❌"))
                 .then(msg => msg.delete({ timeout: 5000 }));
-        }
+        };
         try {
             serverQueue.playing = false;
             serverQueue.connection.dispatcher.pause();

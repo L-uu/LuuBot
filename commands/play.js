@@ -18,31 +18,6 @@ module.exports = {
             return message.react("❌");
         };
 
-        // const config = require("../config.json");
-        // const Youtube = require("simple-youtube-api");
-        // const youtube = new Youtube(`${config.YTAPI}`);
-        // if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-        //     const playlist = await youtube.getPlaylist(url);
-        //     const videos = await playlist.getVideos();
-        //     for (const videolist of Object.values(videos)) {
-        //         const video = await youtube.getVideoByID(videolist.id);
-        //         await handleVideo(video, message, true);
-        //     };
-        // } else {
-        //     try {
-        //         var video = await youtube.getVideo(url);
-        //     } catch {
-        //         try {
-        //             var videos = await youtube.searchVideos(searchString, 1);
-        //             var video = await youtube.getVideoByID(videos[0].id);
-        //         } catch (error) {
-        //             message.channel.send(`${error}`);
-        //             return message.react("❌");
-        //         };
-        //     };
-        //     return handleVideo(video, message);
-        // };
-
         const ytsr = require("youtube-sr");
         const url = args[0] ? args[0].replace(/<(.+)>/g, "$0") : "";
         const searchString = args.slice(0).join(" ");

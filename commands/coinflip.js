@@ -23,7 +23,7 @@ module.exports = {
             message.channel.send("Invalid ammount.")
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
-        }
+        };
         const randomNumber = Math.round(Math.random());
         if(choice == randomNumber) {
             db.add(`guild_${message.guild.id}_bal_${message.author.id}`, args[1]);
