@@ -1,6 +1,7 @@
 module.exports = {
     name: "skip",
-    execute(message) {
+    aliases: ["fs", "remove"],
+    execute(message, args) {
         const { queue } = require("../index");
         const serverQueue = queue.get(message.guild.id);
         if (!serverQueue) {
@@ -14,6 +15,10 @@ module.exports = {
             return message.react("❌");
         };
         try {
+            if (!isNaN(args[0]) && args[0] >= 2) {
+                serverQueue.songs.splice(args[0] - 1, 1);
+                return message.react("✅");
+            };
             if (serverQueue.loop) serverQueue.songs.shift();
             serverQueue.connection.dispatcher.end();
             return message.react("✅");
