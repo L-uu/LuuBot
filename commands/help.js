@@ -9,6 +9,7 @@ module.exports = {
 - unpause (unpauses the currently playing song)\n\
 - skip (skips to the next song in the queue)\n\
 - stop (stops the current song and clears the queue)\n\
+- shuffle (randomizes the order of all songs in the queue)\n\
 - loop (replays the currently playing song after it finishes)\n\
 - np (shows the song currently playing)\n\
 - queue (shows the current queue)\n\n\
