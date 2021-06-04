@@ -51,7 +51,7 @@ module.exports = {
                 spotifyApi.getPlaylist(id)
                     .then(async function(data) {
                         for (let i = 0; i < data.body.tracks.items.length; i++) {
-                            var video = await ytsr.YouTube.searchOne(data.body.tracks.items[i].track.name.toString());
+                            var video = await ytsr.YouTube.searchOne(data.body.tracks.items[i].track.artists[0].name + data.body.tracks.items[i].track.name);
                             await handleVideo(video, message, true);
                         };
                     })
@@ -71,7 +71,7 @@ module.exports = {
                                 spotifyApi.getPlaylist(id)
                                     .then(async function(data) {
                                         for (let i = 0; i < data.body.tracks.items.length; i++) {
-                                            var video = await ytsr.YouTube.searchOne(data.body.tracks.items[i].track.name.toString());
+                                            var video = await ytsr.YouTube.searchOne(data.body.tracks.items[i].track.artists[0].name + data.body.tracks.items[i].track.name);
                                             await handleVideo(video, message, true);
                                         };
                                     });
