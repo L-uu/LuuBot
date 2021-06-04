@@ -18,14 +18,11 @@ module.exports = {
             return message.react("❌");
         };
 
-        let isYT = 0;
-        let isSpotify = 0;
         const ytsr = require("youtube-sr");
         const url = args[0] ? args[0].replace(/<(.+)>/g, "$0") : "";
         const searchString = args.slice(0).join(" ");
         try {
             if (url.match(/^https?:\/\/www.youtube.com\/playlist(.*)$/)) {
-                isYT = 1;
                 const id = url.substr(38);
                 const playlist = await ytsr.YouTube.getPlaylist(id);
                 for (const videolist of Object.values(playlist.videos)) {
@@ -34,7 +31,6 @@ module.exports = {
                 };
             }
             else if (url.match(/^https?:\/\/youtube.com\/playlist(.*)$/)) {
-                isYT = 1;
                 const id = url.substr(34);
                 const playlist = await ytsr.YouTube.getPlaylist(id);
                 for (const videolist of Object.values(playlist.videos)) {
@@ -50,18 +46,16 @@ module.exports = {
                     clientSecret: `${config.CLIENTSECRET}`
                 });
                 spotifyApi.setAccessToken(`${config.ACCESSTOKEN}`);
-                isSpotify = 1;
                 const id = url.substr(34, 22);
                 spotifyApi.getPlaylist(id)
                     .then(async function(data) {
                         for (let i = 0; i < data.body.tracks.items.length; i++) {
-                            var video = data.body.tracks.items[i].track;
+                            var video = await ytsr.YouTube.searchOne(data.body.tracks.items[i].track.name.toString());
                             await handleVideo(video, message, true);
                         };
                     });
             }
             else {
-                isYT = 1;
                 var video = await ytsr.YouTube.searchOne(searchString);
             };
             handleVideo(video, message);
@@ -74,21 +68,11 @@ module.exports = {
             const { queue } = require("../index");
             const serverQueue = queue.get(message.guild.id);
             try {
-                if (isYT == 1) {
-                    var song = {
-                        url: `https://www.youtube.com/watch?v=${video.id}`,
-                        title: video.title.toString(),
-                        thumbnail: video.thumbnail.url.toString(),
-                        requester: message.author.username
-                    };
-                }
-                else if (isSpotify == 1) {
-                    var song = {
-                        url: `https://open.spotify.com/track/${video.id}`,
-                        title: video.name.toString(),
-                        thumbnail: null,
-                        requester: message.author.username
-                    };
+                var song = {
+                    url: `https://www.youtube.com/watch?v=${video.id}`,
+                    title: video.title.toString(),
+                    thumbnail: video.thumbnail.url.toString(),
+                    requester: message.author.username
                 };
             } catch {
                 return;
