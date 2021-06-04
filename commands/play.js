@@ -51,7 +51,7 @@ module.exports = {
                 spotifyApi.getPlaylist(id)
                     .then(async function(data) {
                         for (let i = 0; i < data.body.tracks.items.length; i++) {
-                            var video = await ytsr.YouTube.searchOne(data.body.tracks.items[i].track.artists[0].name + data.body.tracks.items[i].track.name);
+                            var video = await ytsr.YouTube.searchOne(`${data.body.tracks.items[i].track.artists[0].name} ${data.body.tracks.items[i].track.name} audio`);
                             await handleVideo(video, message, true);
                         };
                     })
@@ -71,7 +71,7 @@ module.exports = {
                                 spotifyApi.getPlaylist(id)
                                     .then(async function(data) {
                                         for (let i = 0; i < data.body.tracks.items.length; i++) {
-                                            var video = await ytsr.YouTube.searchOne(data.body.tracks.items[i].track.artists[0].name + data.body.tracks.items[i].track.name);
+                                            var video = await ytsr.YouTube.searchOne(`${data.body.tracks.items[i].track.artists[0].name} ${data.body.tracks.items[i].track.name} audio`);
                                             await handleVideo(video, message, true);
                                         };
                                     });
@@ -82,7 +82,7 @@ module.exports = {
                     })
             }
             else {
-                var video = await ytsr.YouTube.searchOne(searchString);
+                var video = await ytsr.YouTube.searchOne(`${searchString} audio`);
             };
             handleVideo(video, message);
         } catch (error) {
