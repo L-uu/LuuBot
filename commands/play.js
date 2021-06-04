@@ -39,7 +39,8 @@ module.exports = {
                 };
             }
             else if (url.match(/^https?:\/\/open.spotify.com\/playlist(.*)$/)) {
-                const config = require("../config.json");
+                const fs = require("fs");
+                const config = JSON.parse(fs.readFileSync("././config.json", "utf-8"));
                 const SpotifyWebApi = require("spotify-web-api-node");
                 const spotifyApi = new SpotifyWebApi({
                     clientId: `${config.CLIENTID}`,
@@ -53,7 +54,32 @@ module.exports = {
                             var video = await ytsr.YouTube.searchOne(data.body.tracks.items[i].track.name.toString());
                             await handleVideo(video, message, true);
                         };
-                    });
+                    })
+                    .catch(() => {
+                        const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+                        const url = "https://accounts.spotify.com/api/token";
+                        const xhr = new XMLHttpRequest();
+                        xhr.open("POST", url);
+                        xhr.setRequestHeader("Authorization", `Basic ${config.BASE64AUTH}`);
+                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                                const newToken = xhr.responseText.slice(17, 172) // Token is 155 characters long.
+                                const replaceJSONProperty = require("replace-json-property");
+                                replaceJSONProperty.replace("./config.json", "ACCESSTOKEN", newToken);
+                                spotifyApi.setAccessToken(`${newToken}`);
+                                spotifyApi.getPlaylist(id)
+                                    .then(async function(data) {
+                                        for (let i = 0; i < data.body.tracks.items.length; i++) {
+                                            var video = await ytsr.YouTube.searchOne(data.body.tracks.items[i].track.name.toString());
+                                            await handleVideo(video, message, true);
+                                        };
+                                    });
+                            };
+                        };
+                        const data = `grant_type=refresh_token&refresh_token=${config.REFRESHTOKEN}`;
+                        xhr.send(data);
+                    })
             }
             else {
                 var video = await ytsr.YouTube.searchOne(searchString);
