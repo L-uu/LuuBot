@@ -22,7 +22,14 @@ module.exports = {
         const url = args[0] ? args[0].replace(/<(.+)>/g, "$0") : "";
         const searchString = args.slice(0).join(" ");
         try {
-            if (url.match(/^https?:\/\/www.youtube.com\/playlist(.*)$/)) {
+            if (url.match(/^https?:\/\/www.youtube.com\/watch(.*)$/)) {
+                const ytdl = require("discord-ytdl-core");
+                ytdl.getBasicInfo(url)
+                    .then(async video => {
+                        await handleVideo(video, message);
+                    });
+            }
+            else if (url.match(/^https?:\/\/www.youtube.com\/playlist(.*)$/)) {
                 const id = url.substr(38);
                 const playlist = await ytsr.YouTube.getPlaylist(id);
                 for (const videolist of Object.values(playlist.videos)) {
@@ -94,11 +101,21 @@ module.exports = {
             const { queue } = require("../index");
             const serverQueue = queue.get(message.guild.id);
             try {
-                var song = {
-                    url: `https://www.youtube.com/watch?v=${video.id}`,
-                    title: video.title.toString(),
-                    thumbnail: video.thumbnail.url.toString(),
-                    requester: message.author.username
+                if (video.videoDetails) {
+                    var song = {
+                        url: `https://www.youtube.com/watch?v=${video.videoDetails.videoId}`,
+                        title: video.videoDetails.title,
+                        thumbnail: video.videoDetails.thumbnails[4].url,
+                        requester: message.author.username
+                    };
+                }
+                else {
+                    var song = {
+                        url: `https://www.youtube.com/watch?v=${video.id}`,
+                        title: video.title.toString(),
+                        thumbnail: video.thumbnail.url.toString(),
+                        requester: message.author.username
+                    };
                 };
             } catch {
                 return;
