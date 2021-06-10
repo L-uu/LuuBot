@@ -3,6 +3,14 @@ const client = new Discord.Client();
 const config = require("./config.json");
 const db = require("quick.db");
 
+const { Manager } = require("@lavacord/discord.js");
+const lavacordManager = new Manager(client, config.NODES);
+module.exports = {
+    client,
+    lavacordManager,
+    queues: {}
+};
+
 const fs = require("fs");
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
@@ -36,8 +44,10 @@ client.on("message", async message => {
 });
 
 client.on("ready", () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+    lavacordManager.connect()
+        .then(console.log(`Connected to Lavalink!`));
     client.user.setPresence({ activity: { name: `tunes! | prefix: ${config.PREFIX}`, type: "LISTENING" } });
+    console.log(`Logged in as ${client.user.tag}!`);
 });
 
 function setPresence() {

@@ -1,5 +1,5 @@
-const { TextChannel, MessageEmbed } = require("discord.js");
-const { lavacordManager } = require("..");
+const { TextChannel, MessageEmbed } = require("discord.js")
+const { lavacordManager } = require("..")
 const urlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)
 const axios = require("axios").default
 
@@ -24,7 +24,9 @@ module.exports = class Queue {
         const params = new URLSearchParams()
         params.append("identifier", urlRegex.test(searchTerm) ? searchTerm: `ytsearch:${searchTerm}`)
         const data = await axios(`http://${node.host}:${node.port}/loadtracks?${params}`, {
-            Authorization: node.password
+            headers: {
+                Authorization: node.password
+            }
         })
         return data.data.tracks || []
     }
@@ -32,7 +34,7 @@ module.exports = class Queue {
     async play(track) {
         this.queue.push(track)
         if (!this.currentlyPlaying) {
-            this.playNext
+            this.playNext()
             return false
         } else {
             return true
@@ -45,17 +47,25 @@ module.exports = class Queue {
         if (!nextSong) {
             this.player = null
             this.currentlyPlaying = null
-
             await lavacordManager.leave(this.guildID)
-            this.textChannel.send("Finished playing.")
             return
         }
+        const getThumb = require("video-thumbnail-url")
+        const thumbnail = getThumb(nextSong.info.uri)
         this.textChannel.send(
             new MessageEmbed()
                 .setColor("RANDOM")
-                .setAuthor("Paused")
+                .setAuthor("Now Playing")
                 .setTitle(`${nextSong.info.title}`)
-        )
+                .setImage(`${thumbnail._rejectionHandler0}`)
+        ).then(msg => msg.delete({ timeout: 5000 }))
+        if (!this.player) {
+            this.player = await lavacordManager.join({
+                guild: this.guildID,
+                channel: this.channelID,
+                node: lavacordManager.idealNodes[0].id
+            })
+        }
         this.player.on("end", data => {
             if(data.reason === "REPLACED" || data.reason === "STOPPED") return
             this.playNext()
