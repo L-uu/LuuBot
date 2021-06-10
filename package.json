@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
+    "@lavacord/discord.js": "^0.0.7",
+    "axios": "^0.21.1",
     "canvacord": "^5.2.1",
     "discord-ytdl-core": "^5.0.3",
     "discord.js": "^12.5.3",
