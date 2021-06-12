@@ -22,19 +22,14 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
-        try {
-            const deleteAmount = parseInt(args[0]);
-            message.channel.bulkDelete(deleteAmount + 1);
-            if (deleteAmount == 1) {
-                return message.channel.send(`Deleted \`${deleteAmount}\` message.`)
-                    .then(msg => msg.delete({ timeout: 5000 }));
-            } else {
-                return message.channel.send(`Deleted \`${deleteAmount}\` messages.`)
-                    .then(msg => msg.delete({ timeout: 5000 }));
-            };
-        } catch (error) {
-            message.channel.send(`${error}`);
-            return message.react("❌");
+        const deleteAmount = parseInt(args[0]);
+        message.channel.bulkDelete(deleteAmount + 1);
+        if (deleteAmount == 1) {
+            return message.channel.send(`Deleted \`${deleteAmount}\` message.`)
+                .then(msg => msg.delete({ timeout: 5000 }));
+        } else {
+            return message.channel.send(`Deleted \`${deleteAmount}\` messages.`)
+                .then(msg => msg.delete({ timeout: 5000 }));
         };
     }
 };

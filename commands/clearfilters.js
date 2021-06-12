@@ -22,34 +22,29 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
-        try {
-            const dispatcher = serverQueue.connection.dispatcher;
-            serverQueue.curtime += dispatcher.streamTime;
-            if (serverQueue.nightcore == true) {
-                serverQueue.nightcore = false;
-                serverQueue.seek = serverQueue.curtime * 1.1484375;
-                serverQueue.curtime = serverQueue.seek;
-                serverQueue.asetrate = 48000;
-            };
-            if (serverQueue.speed != 1) {
-                serverQueue.curtime = serverQueue.curtime * serverQueue.speed;
-                serverQueue.seek = serverQueue.curtime;
-                serverQueue.speed = 1;
-            };
-            if (serverQueue.bass != 0) {
-                serverQueue.seek = serverQueue.curtime;
-                serverQueue.bass = 0;
-            };
-            if (serverQueue.pitch != 1) {
-                serverQueue.seek = serverQueue.curtime;
-                serverQueue.pitch = 1;
-            };
-            serverQueue.filterCmd = true;
-            dispatcher.end();
-            return message.react("✅");
-        } catch (error) {
-            message.channel.send(`${error}`);
-            return message.react("❌");
+        const dispatcher = serverQueue.connection.dispatcher;
+        serverQueue.curtime += dispatcher.streamTime;
+        if (serverQueue.nightcore == true) {
+            serverQueue.nightcore = false;
+            serverQueue.seek = serverQueue.curtime * 1.1484375;
+            serverQueue.curtime = serverQueue.seek;
+            serverQueue.asetrate = 48000;
         };
+        if (serverQueue.speed != 1) {
+            serverQueue.curtime = serverQueue.curtime * serverQueue.speed;
+            serverQueue.seek = serverQueue.curtime;
+            serverQueue.speed = 1;
+        };
+        if (serverQueue.bass != 0) {
+            serverQueue.seek = serverQueue.curtime;
+            serverQueue.bass = 0;
+        };
+        if (serverQueue.pitch != 1) {
+            serverQueue.seek = serverQueue.curtime;
+            serverQueue.pitch = 1;
+        };
+        serverQueue.filterCmd = true;
+        dispatcher.end();
+        return message.react("✅");
     }
 };

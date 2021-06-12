@@ -13,15 +13,10 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
-        try {
-            serverQueue.songs = [];
-            serverQueue.connection.dispatcher.end();
-            return message.channel.send("Music stopped.")
-                .then(message.react("✅"))
-                .then(msg => msg.delete({ timeout: 5000 }));
-        } catch (error) {
-            message.channel.send(`${error}`);
-            return message.react("❌");
-        };
+        serverQueue.songs = [];
+        serverQueue.connection.dispatcher.end();
+        return message.channel.send("Music stopped.")
+            .then(message.react("✅"))
+            .then(msg => msg.delete({ timeout: 5000 }));
     }
 };

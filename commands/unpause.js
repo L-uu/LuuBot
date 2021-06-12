@@ -17,15 +17,10 @@ module.exports = {
                 .then(message.react("❌"))
                 .then(msg => msg.delete({ timeout: 5000 }));
         };
-        try {
-            serverQueue.playing = true;
-            serverQueue.connection.dispatcher.resume();
-            const upembed = require("../embeds/upembed");
-            upembed.execute(message);
-            return message.react("✅")
-        } catch (error) {
-            message.channel.send(`${error}`);
-            return message.react("❌");
-        };
+        serverQueue.playing = true;
+        serverQueue.connection.dispatcher.resume();
+        const upembed = require("../embeds/upembed");
+        upembed.execute(message);
+        return message.react("✅")
     }
 };

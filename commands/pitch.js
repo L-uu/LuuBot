@@ -26,17 +26,12 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
-        try {
-            const dispatcher = serverQueue.connection.dispatcher;
-            serverQueue.curtime += dispatcher.streamTime;
-            serverQueue.seek = serverQueue.curtime;
-            serverQueue.pitch = args[0];
-            serverQueue.filterCmd = true;
-            dispatcher.end();
-            return message.react("✅");
-        } catch (error) {
-            message.channel.send(`${error}`);
-            return message.react("❌");
-        };
+        const dispatcher = serverQueue.connection.dispatcher;
+        serverQueue.curtime += dispatcher.streamTime;
+        serverQueue.seek = serverQueue.curtime;
+        serverQueue.pitch = args[0];
+        serverQueue.filterCmd = true;
+        dispatcher.end();
+        return message.react("✅");
     }
 };

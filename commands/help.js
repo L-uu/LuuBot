@@ -1,8 +1,7 @@
 module.exports = {
     name: "help",
     execute(message) {
-        try {
-            message.channel.send("\
+        message.channel.send("\
 **Music Control:**\n\
 - play (plays a song via youtube url or search string)\n\
 - pause (pauses the currently playing song)\n\
@@ -34,10 +33,6 @@ module.exports = {
 - rank (displays your rank)\n\
 - leaderboard (show the top 10 ranked members)\n\
 - urban (searches urban dictionary for an entered string)");
-            return message.react("✅");
-        } catch (error) {
-            message.channel.send(`${error}`);
-            return message.react("❌");
-        };
+        return message.react("✅");
     }
 };

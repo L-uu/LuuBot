@@ -18,15 +18,10 @@ module.exports = {
                 .then(message.react("❌"))
                 .then(msg => msg.delete({ timeout: 5000 }));
         };
-        try {
-            serverQueue.playing = false;
-            serverQueue.connection.dispatcher.pause();
-            const pembed = require("../embeds/pembed");
-            pembed.execute(message);
-            return message.react("✅");
-        } catch (error) {
-            message.channel.send(`${error}`);
-            return message.react("❌");
-        };
+        serverQueue.playing = false;
+        serverQueue.connection.dispatcher.pause();
+        const pembed = require("../embeds/pembed");
+        pembed.execute(message);
+        return message.react("✅");
     }
 };

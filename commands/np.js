@@ -8,13 +8,8 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
-        try {
-            const npembed = require("../embeds/npembed");
-            npembed.execute(message);
-            return message.react("✅");
-        } catch (error) {
-            message.channel.send(`${error}`);
-            return message.react("❌");
-        };
+        const npembed = require("../embeds/npembed");
+        npembed.execute(message);
+        return message.react("✅");
     }
 };

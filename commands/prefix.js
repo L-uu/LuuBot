@@ -17,18 +17,13 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
-        try {
-            if (args[0] == "-") {
-                db.delete(`guild_${message.guild.id}_prefix`);
-            };
-            db.set(`guild_${message.guild.id}_prefix`, args[0])
-            const { prefix } = require("../index");
-            message.channel.send(`Prefix changed from \`${prefix}\` to \`${args[0]}\``)
-                    .then(msg => msg.delete({ timeout: 5000 }));
-            return message.react("✅");
-        } catch (error) {
-            message.channel.send(`${error}`);
-            return message.react("❌");
+        if (args[0] == "-") {
+            db.delete(`guild_${message.guild.id}_prefix`);
         };
+        db.set(`guild_${message.guild.id}_prefix`, args[0])
+        const { prefix } = require("../index");
+        message.channel.send(`Prefix changed from \`${prefix}\` to \`${args[0]}\``)
+                .then(msg => msg.delete({ timeout: 5000 }));
+        return message.react("✅");
     }
 };

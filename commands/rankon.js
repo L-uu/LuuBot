@@ -6,21 +6,16 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
-        try {
-            const { isRankOn } = require("../index");
-            if (isRankOn == false) {
-                const db = require("quick.db");
-                db.set(`guild_${message.guild.id}_isrankon`, true);
-                message.channel.send("Ranking system enabled.")
-                    .then(msg => msg.delete({ timeout: 5000 }));
-                return message.react("✅");
-            } else {
-                message.channel.send("Ranking is already enabled.")
-                    .then(msg => msg.delete({ timeout: 5000 }));
-                return message.react("❌");
-            };
-        } catch (error) {
-            message.channel.send(`${error}`);
+        const { isRankOn } = require("../index");
+        if (isRankOn == false) {
+            const db = require("quick.db");
+            db.set(`guild_${message.guild.id}_isrankon`, true);
+            message.channel.send("Ranking system enabled.")
+                .then(msg => msg.delete({ timeout: 5000 }));
+            return message.react("✅");
+        } else {
+            message.channel.send("Ranking is already enabled.")
+                .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
     }

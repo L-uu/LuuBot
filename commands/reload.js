@@ -12,15 +12,10 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
-        try {
-            const newCommand = require(`./${command.name}.js`);
-            message.client.commands.set(newCommand.name, newCommand);
-            message.channel.send(`Command \`${command.name}\` was reloaded.`)
-                .then(msg => msg.delete({ timeout: 5000 }));
-            return message.react("✅");
-        } catch (error) {
-            message.channel.send(`${error}`);
-            return message.react("❌");
-        }
+        const newCommand = require(`./${command.name}.js`);
+        message.client.commands.set(newCommand.name, newCommand);
+        message.channel.send(`Command \`${command.name}\` was reloaded.`)
+            .then(msg => msg.delete({ timeout: 5000 }));
+        return message.react("✅");
     }
 };

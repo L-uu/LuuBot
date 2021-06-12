@@ -26,20 +26,15 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
-        try {
-            const reason = args.slice(2).join(" ");
-            if (message.mentions.members.first().bannable) {
-                message.mentions.members.first().ban({ reason: `${reason}` });
-                message.channel.send(`<@${message.author.id}> has successfully banned <@${message.mentions.members.first().id}>`)
-                    .then(msg => msg.delete({ timeout: 5000 }));
-                return message.react("✅");
-            } else {
-                message.channel.send("I cannot ban this member, please drag my role to the top of the roles list.")
-                    .then(msg => msg.delete({ timeout: 5000 }));
-                return message.react("❌");
-            };
-        } catch (error) {
-            message.channel.send(`${error}`);
+        const reason = args.slice(2).join(" ");
+        if (message.mentions.members.first().bannable) {
+            message.mentions.members.first().ban({ reason: `${reason}` });
+            message.channel.send(`<@${message.author.id}> has successfully banned <@${message.mentions.members.first().id}>`)
+                .then(msg => msg.delete({ timeout: 5000 }));
+            return message.react("✅");
+        } else {
+            message.channel.send("I cannot ban this member, please drag my role to the top of the roles list.")
+                .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
     }
