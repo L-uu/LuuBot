@@ -17,7 +17,6 @@ function play(message, guild, song) {
     if (serverQueue.eightd != 0) encoderArgs.push(`apulsator=hz=${serverQueue.eightd}`);
     encoderArgsString = encoderArgs.join(", ");
     encoderArgs = ["-af", `${encoderArgsString}`];
-    console.log(encoderArgs);
     serverQueue.stream = ytdl(song.url, {
         filter: "audioonly",
         opusEncoded: true,
