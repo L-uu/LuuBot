@@ -124,6 +124,7 @@ module.exports = {
                     bass: 0,
                     speed: 1,
                     pitch: 1,
+                    eightd: 0,
                     curtime: 0,
                     seek: 0
                 };

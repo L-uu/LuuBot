@@ -7,17 +7,22 @@ function play(message, guild, song) {
         return message.guild.me.voice.channel.leave();
     };
     const ytdl = require("discord-ytdl-core");
+    let encoderArgs = [`aresample=48000`];
+    let encoderArgsString = "";
+    if (serverQueue.nightcore == true) encoderArgs.push(`asetrate=${serverQueue.asetrate}`);
+    if (serverQueue.speed != 1) encoderArgs.push(`atempo=${serverQueue.speed}`);
+    encoderArgs.push(`atrim=start=${serverQueue.seek/1000}`);
+    if (serverQueue.bass != 0) encoderArgs.push(`bass=g=${serverQueue.bass}`);
+    if (serverQueue.pitch != 1) encoderArgs.push(`rubberband=pitch=${serverQueue.pitch}`);
+    if (serverQueue.eightd != 0) encoderArgs.push(`apulsator=hz=${serverQueue.eightd}`);
+    encoderArgsString = encoderArgs.join(", ");
+    encoderArgs = ["-af", `${encoderArgsString}`];
+    console.log(encoderArgs);
     serverQueue.stream = ytdl(song.url, {
         filter: "audioonly",
         opusEncoded: true,
         highWaterMark: 1<<25,
-        encoderArgs: ["-af", `\
-aresample=48000,\
-asetrate=${serverQueue.asetrate},\
-atempo=${serverQueue.speed},\
-atrim=start=${serverQueue.seek/1000},\
-bass=g=${serverQueue.bass},\
-rubberband=pitch=${serverQueue.pitch}`]
+        encoderArgs: encoderArgs
     });
     const dispatcher = serverQueue.connection.play(serverQueue.stream, {
         type: "opus"
