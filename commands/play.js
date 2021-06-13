@@ -18,21 +18,19 @@ module.exports = {
             return message.react("❌");
         };
 
+        const ytdl = require("discord-ytdl-core");
         const ytsr = require("youtube-sr");
         const url = args[0] ? args[0].replace(/<(.+)>/g, "$0") : "";
         const searchString = args.slice(0).join(" ");
         if (url.match(/^https?:\/\/www.youtube.com\/watch(.*)$/)) {
-            const ytdl = require("discord-ytdl-core");
-            ytdl.getBasicInfo(url)
-                .then(async video => {
-                    await handleVideo(video, message);
-                });
+            const video = await ytdl.getBasicInfo(url);
+            await handleVideo(video, message);
         }
         else if (url.match(/^https?:\/\/www.youtube.com\/playlist(.*)$/)) {
             const id = url.substr(38);
             const playlist = await ytsr.YouTube.getPlaylist(id);
             for (const videolist of Object.values(playlist.videos)) {
-                const video = await ytsr.YouTube.searchOne(`https://www.youtube.com/watch?v=${videolist.id}`);
+                const video = await ytdl.getBasicInfo(`https://www.youtube.com/watch?v=${videolist.id}`);
                 await handleVideo(video, message, true);
             };
         }
@@ -40,7 +38,7 @@ module.exports = {
             const id = url.substr(34);
             const playlist = await ytsr.YouTube.getPlaylist(id);
             for (const videolist of Object.values(playlist.videos)) {
-                const video = await ytsr.YouTube.searchOne(`https://www.youtube.com/watch?v=${videolist.id}`);
+                const video = await ytdl.getBasicInfo(`https://www.youtube.com/watch?v=${videolist.id}`);
                 await handleVideo(video, message, true);
             };
         }
@@ -88,9 +86,9 @@ module.exports = {
                 })
         }
         else {
-            var video = await ytsr.YouTube.searchOne(`${searchString} audio`);
+            const video = await ytsr.YouTube.searchOne(`${searchString} audio`);
+            await handleVideo(video, message);
         };
-        await handleVideo(video, message);
 
         async function handleVideo(video, message, playlist = false) {
             const { queue } = require("../index");
@@ -99,7 +97,7 @@ module.exports = {
                 var song = {
                     url: `https://www.youtube.com/watch?v=${video.videoDetails.videoId}`,
                     title: video.videoDetails.title,
-                    thumbnail: video.videoDetails.thumbnails[4].url,
+                    thumbnail: video.videoDetails.thumbnails.pop().url,
                     requester: message.author.username
                 };
             }
