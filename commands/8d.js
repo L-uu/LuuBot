@@ -21,8 +21,8 @@ module.exports = {
         if (args[0].toLowerCase() == "off") {
             args[0] = 0;
         };
-        if (args[0] < 0.01 || isNaN(args[0]) || args[0] > 100) {
-            message.channel.send("Invalid input, integers / decimals from 0.01 to 100 accepted.")
+        if (args[0] < 0 || isNaN(args[0]) || args[0] > 100) {
+            message.channel.send("Invalid input, integers / decimals from 0 to 100 accepted.")
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
