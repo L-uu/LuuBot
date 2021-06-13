@@ -17,6 +17,7 @@ module.exports = {
 - bass (changes the volume of bass frequencies for the current queue)\n\
 - speed (changes the playback speed for the current queue)\n\
 - pitch (changes the pitch of the audio for the current queue)\n\
+- 8d (changes how quickly the audio moves between the L and R stereo channels)\n\
 - clearfilters (removes all custom playback settings)\n\n\
 **Economy**\n\
 - makebank (creates a bank account to store money)\n\
