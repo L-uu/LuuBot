@@ -1,6 +1,6 @@
 module.exports = {
     name: "shuffle",
-    execute(message, args) {
+    execute(message) {
         const { queue } = require("../index");
         const serverQueue = queue.get(message.guild.id);
         if (!serverQueue) {
@@ -13,7 +13,10 @@ module.exports = {
                 .then(msg => msg.delete({ timeout: 5000 }));
             return message.react("❌");
         };
+        const np = serverQueue.songs[0];
+        serverQueue.songs.shift();
         serverQueue.songs = serverQueue.songs.sort(() => Math.random() - 0.5);
+        serverQueue.songs.unshift(np);
         return message.react("✅");
     }
 };
