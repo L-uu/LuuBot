@@ -18,19 +18,35 @@ module.exports = {
             return message.react("❌");
         };
 
+        const fs = require("fs");
+        const config = JSON.parse(fs.readFileSync("././config.json", "utf-8"));
         const ytdl = require("discord-ytdl-core");
         const ytsr = require("youtube-sr");
         const url = args[0] ? args[0].replace(/<(.+)>/g, "$0") : "";
         const searchString = args.slice(0).join(" ");
         if (url.match(/^https?:\/\/www.youtube.com\/watch(.*)$/)) {
-            const video = await ytdl.getBasicInfo(url);
+            const video = await ytdl.getBasicInfo(url, {
+                requestOptions: {
+                    headers: {
+                        cookie: config.COOKIES,
+                        "x-youtube-identity-token": config.YTIDTOKEN
+                    }
+                }
+            });
             await handleVideo(video, message);
         }
         else if (url.match(/^https?:\/\/www.youtube.com\/playlist(.*)$/)) {
             const id = url.substr(38);
             const playlist = await ytsr.YouTube.getPlaylist(id);
             for (const videolist of Object.values(playlist.videos)) {
-                const video = await ytdl.getBasicInfo(`https://www.youtube.com/watch?v=${videolist.id}`);
+                const video = await ytdl.getBasicInfo(`https://www.youtube.com/watch?v=${videolist.id}`, {
+                    requestOptions: {
+                        headers: {
+                            cookie: config.COOKIES,
+                            "x-youtube-identity-token": config.YTIDTOKEN
+                        }
+                    }
+                });
                 await handleVideo(video, message, true);
             };
         }
@@ -38,13 +54,19 @@ module.exports = {
             const id = url.substr(34);
             const playlist = await ytsr.YouTube.getPlaylist(id);
             for (const videolist of Object.values(playlist.videos)) {
-                const video = await ytdl.getBasicInfo(`https://www.youtube.com/watch?v=${videolist.id}`);
+                const video = await ytdl.getBasicInfo(`https://www.youtube.com/watch?v=${videolist.id}`, {
+                    requestOptions: {
+                        headers: {
+                            cookie: config.COOKIES,
+                            "x-youtube-identity-token": config.YTIDTOKEN
+                        }
+                    }
+                });
                 await handleVideo(video, message, true);
             };
         }
         else if (url.match(/^https?:\/\/open.spotify.com\/playlist(.*)$/)) {
-            const fs = require("fs");
-            const config = JSON.parse(fs.readFileSync("././config.json", "utf-8"));
+
             const SpotifyWebApi = require("spotify-web-api-node");
             const spotifyApi = new SpotifyWebApi({
                 clientId: `${config.CLIENTID}`,

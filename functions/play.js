@@ -17,7 +17,15 @@ function play(message, guild, song) {
     if (serverQueue.eightd != 0) encoderArgs.push(`apulsator=hz=${serverQueue.eightd}`);
     encoderArgsString = encoderArgs.join(", ");
     encoderArgs = ["-af", `${encoderArgsString}`];
+    const fs = require("fs");
+    const config = JSON.parse(fs.readFileSync("././config.json", "utf-8"));
     serverQueue.stream = ytdl(song.url, {
+        requestOptions: {
+            headers: {
+                cookie: config.COOKIES,
+                "x-youtube-identity-token": config.YTIDTOKEN
+            }
+        },
         filter: "audioonly",
         opusEncoded: true,
         highWaterMark: 1<<25,
@@ -38,7 +46,6 @@ function play(message, guild, song) {
         serverQueue.stream.destroy();
         serverQueue.songs = [];
         queue.delete(guild.id);
-        message.channel.send("It appears the bot is being rate limited for now, I'll try and fix this soon.");
         console.log(error);
         return message.react("❌");
     });
