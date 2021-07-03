@@ -10,7 +10,7 @@
     "spotify-web-api-node": "^5.0.2",
     "urban": "^0.3.2",
     "xmlhttprequest": "^1.8.0",
-    "youtube-sr": "^4.1.5",
-    "ytdl-core": "^4.8.2"
+    "youtube-sr": "^4.1.6",
+    "ytdl-core": "^4.8.3"
   }
 }
