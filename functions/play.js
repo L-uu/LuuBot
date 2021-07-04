@@ -28,6 +28,7 @@ function play(message, guild, song) {
         },
         filter: "audioonly",
         opusEncoded: true,
+        dlChunkSize: 0,
         highWaterMark: 1<<25,
         encoderArgs: encoderArgs
     });
