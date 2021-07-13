@@ -42,6 +42,10 @@ client.on("ready", () => {
     client.user.setPresence({ activity: { name: `tunes! | prefix: ${config.PREFIX}`, type: "LISTENING" } });
 });
 
+process.on('unhandledRejection', error => {
+	console.error('Unhandled promise rejection:', error);
+});
+
 function setPresence() {
     return client.user.setPresence({ activity: { name: `tunes! | prefix: ${config.PREFIX}`, type: "LISTENING" } });
 };
