@@ -44,6 +44,10 @@ function play(message, guild, song) {
         serverQueue.filterCmd = false;
         play(message, guild, serverQueue.songs[0]);
     }).on("error", (error) => {
+        if (error.statusCode == "429" || error.statusCode == "403") {
+            const { playProxy } = require("./playProxy");
+            return playProxy(message, guild, serverQueue.songs[0]);
+        };
         serverQueue.stream.destroy();
         serverQueue.songs = [];
         queue.delete(guild.id);
