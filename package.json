@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
-    "canvacord": "^5.2.1",
+    "canvacord": "^5.2.3",
     "discord-ytdl-core": "^5.0.4",
     "discord.js": "^12.5.3",
     "ffmpeg-static": "^4.4.0",
@@ -13,6 +13,6 @@
     "urban": "^0.3.2",
     "xmlhttprequest": "^1.8.0",
     "youtube-sr": "^4.1.7",
-    "ytdl-core": "^4.8.3"
+    "ytdl-core": "^4.9.1"
   }
 }
