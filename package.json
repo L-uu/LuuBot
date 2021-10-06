@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@discordjs/opus": "^0.5.3",
+    "@discordjs/opus": "^0.6.0",
     "canvacord": "^5.2.3",
     "discord-ytdl-core": "^5.0.4",
     "discord.js": "^12.5.3",
@@ -8,11 +8,11 @@
     "fs": "^0.0.1-security",
     "https-proxy-agent": "^5.0.0",
     "quick.db": "^7.1.3",
-    "replace-json-property": "^1.6.3",
+    "replace-json-property": "^1.7.1",
     "spotify-web-api-node": "^5.0.2",
-    "urban": "^0.3.2",
+    "urban": "^0.3.4",
     "xmlhttprequest": "^1.8.0",
-    "youtube-sr": "^4.1.7",
+    "youtube-sr": "^4.1.8",
     "ytdl-core": "^4.9.1"
   }
 }

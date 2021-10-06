@@ -43,6 +43,9 @@ module.exports = {
             serverQueue.seek = serverQueue.curtime;
             serverQueue.pitch = 1;
         };
+        if (serverQueue.eightd != 0) {
+            serverQueue.eightd = 0;
+        };
         serverQueue.filterCmd = true;
         dispatcher.end();
         return message.react("✅");
